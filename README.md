@@ -2,15 +2,11 @@
 
 生成式视觉推理综述
 
-**Dylan Yan** · sole first author, with MMLab, NTU  
-独立一作，合作于南洋理工大学 MMLab
-
 Manuscript under review. This repository shares the survey’s main argument and figures. The manuscript PDF is not released here.
 
 稿件在投。本仓库公开综述的主要内容和图片，不发布论文 PDF。
 
 Project page: <https://anzy200299-ui.github.io/generative-visual-reasoning-survey/>  
-Personal site: <https://anzy200299-ui.github.io/>
 
 ## Definition
 
@@ -84,8 +80,6 @@ VBVR and VBVR-Pro show the value of fully verifiable evaluation: rule-based scor
 
 VBVR 与 VBVR-Pro 说明，基于规则的可验证评估有助于复现、诊断，并提供与任务对应的反馈。可验证性仍然相对于明确的约束，以及从生成像素中提取状态的可靠性。验证通过只说明任务成功，不能说明是哪个组件完成了推理。
 
-## Availability
+## About this project
 
-Co-author names are withheld during anonymous review. This page will be updated when the full author list and citation record can be released.
-
-匿名审稿期间暂不列出合作者。完整作者名单和引用信息会在可以公开时补充。
+A visual guide to the survey?s task taxonomy, capability-flow framework, and evaluation principles. Only the overview and figures are published here; the manuscript PDF is not included.

@@ -6,15 +6,15 @@
   <title>A Survey of Generative Visual Reasoning</title>
   <meta name="description" content="A Survey of Generative Visual Reasoning studies when visual generation must infer task-relevant information, where that inference happens, and how to evaluate it. 生成式视觉推理综述：任务需要推断什么、推断发生在哪里，以及如何评估。">
   <meta name="keywords" content="Generative Visual Reasoning, GVR, visual reasoning, video generation, world models, chain-of-frames, capability bridge, 生成式视觉推理, 视觉推理, 视频生成">
-  <meta name="author" content="Dylan Yan">
+  
   <link rel="canonical" href="https://anzy200299-ui.github.io/generative-visual-reasoning-survey/">
   <meta property="og:title" content="A Survey of Generative Visual Reasoning">
   <meta property="og:description" content="Task requirements, capability flow, and evaluation for reasoning in image and video generation.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://anzy200299-ui.github.io/generative-visual-reasoning-survey/">
-  <meta property="og:image" content="https://anzy200299-ui.github.io/generative-visual-reasoning-survey/assets/framework.png">
+  <meta property="og:image" content="https://anzy200299-ui.github.io/generative-visual-reasoning-survey/assets/teaser.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -40,16 +40,19 @@
   </script>
 </head>
 <body>
-  <header>
+  <a class="skip-link" href="#definition">Skip to content</a>
+  <header class="hero" id="top">
     <div class="wrap">
-      <p class="kicker">Manuscript under review · 稿件在投</p>
-      <h1>A Survey of Generative Visual Reasoning<span>生成式视觉推理综述</span></h1>
-      <p class="byline">Dylan Yan · sole first author, with MMLab, NTU<br>
-        <span class="zh">Dylan Yan · 独立一作，合作于南洋理工大学 MMLab</span></p>
-      <div class="links">
-        <a href="https://anzy200299-ui.github.io/">Personal site 个人主页</a>
-        <a href="https://github.com/anzy200299-ui/generative-visual-reasoning-survey">GitHub</a>
-      </div>
+      <div class="hero-top"><a class="brand" href="#top">GVR <span>/ A RESEARCH SURVEY</span></a><a href="https://github.com/anzy200299-ui/generative-visual-reasoning-survey">Explore on GitHub ?</a></div>
+      <div class="hero-grid"><div>
+        <p class="kicker">Images. Video. Reasoning.</p>
+        <h1>A Survey of<br><em>Generative Visual</em><br>Reasoning</h1>
+        <p class="hero-zh" lang="zh-CN">?????????</p>
+        <p class="hero-summary">A correct video is only the beginning.<br>What was inferred?and where?</p>
+        <p class="zh">?????????????????????????????</p>
+        <div class="links"><a class="button" href="#framework">Explore the framework ?</a><a class="text-link" href="#messages">Four key messages ?</a></div>
+      </div><figure class="hero-art"><img decoding="async" fetchpriority="high" src="assets/reasoning-sketch.svg" width="640" height="510" alt="Hand-drawn conceptual diagram comparing a plan computed before rendering with generated visual states reused in later reasoning. Neither route alone establishes generator-level inference."><figcaption>A conceptual sketch ? ???????????</figcaption></figure></div>
+      <div class="overview-strip"><a href="#tasks"><b>06</b><span>Task categories<small>????????</small></span></a><a href="#bridges"><b>05</b><span>Capability bridges<small>?????????</small></span></a><a href="#messages"><b>04</b><span>Key messages<small>??????????</small></span></a></div>
     </div>
   </header>
   <nav>
@@ -72,10 +75,7 @@
       <p class="zh">生成模型已经被用来预测未来场景和求解视觉问题。生成结果正确，并不等于生成器完成了背后的推理。一段小球滚落的视频，既可能只是在渲染外部仿真器算好的轨迹，也可能是生成器自己预测了运动。</p>
       <p><strong>Generative Visual Reasoning (GVR)</strong> means visual generation tasks whose correctness depends on inferring task-relevant states, relations, or transitions that are not explicitly given in the input. That inferred information must also appear consistently in the generated output. The definition is about the task. It does not assume that the visual generator is the component that performs the inference.</p>
       <p class="zh"><strong>生成式视觉推理（GVR）</strong>指这样的视觉生成任务：输出要正确，就必须推断输入里没有明确给出的任务相关状态、关系或转移，并且这些信息要一致地体现在生成结果中。这个定义针对任务，并不假设推断一定由视觉生成器完成。</p>
-      <div class="note">
-        <p>This page shares the survey’s main argument and figures so the work can be found and read. The manuscript PDF is not posted.</p>
-        <p class="zh">本页公开综述的主要内容和图片，方便检索与阅读。论文 PDF 不在这里发布。</p>
-      </div>
+
     </section>
 
     <section id="question">
@@ -85,19 +85,19 @@
         <p class="zh">视觉生成要正确，必须推断哪些信息？视觉生成器是参与了这些推断，还是只是在渲染一个外部已经确定的解？</p>
       </div>
       <figure>
-        <img src="assets/teaser.png" alt="Two routes to a generated result. On the left, a planner or simulator decides the solution before the visual generator renders it. On the right, generated intermediate visual states are reused for the next reasoning step.">
+        <img loading="lazy" decoding="async" src="assets/teaser.png" alt="Two routes to a generated result. On the left, a planner or simulator decides the solution before the visual generator renders it. On the right, generated intermediate visual states are reused for the next reasoning step.">
         <figcaption>External reasoning can fix the solution before generation. Alternatively, generated intermediate visual states are reused for subsequent reasoning. The central question is where the reasoning occurs.
           <span class="zh">左侧：外部推理先确定解，生成器负责渲染。右侧：生成的中间视觉状态被后续推理继续使用。核心问题是推理发生在哪里。</span>
         </figcaption>
       </figure>
       <p>Generating an intermediate image is neither necessary nor sufficient for attributing reasoning to the visual generator. An intermediate frame may only visualize a plan computed elsewhere, while a generator may infer task-relevant information without showing an explicit visual chain of thought. Task success and generator-level reasoning are different claims.</p>
       <p class="zh">生成中间图像，既不是“生成器在推理”的必要条件，也不是充分条件。中间帧可能只是在可视化别处算好的计划；生成器也可能没有显式视觉思维链，却已经推断了任务所需信息。任务成功和生成器层面的推理是两件不同的事。</p>
-      <figure>
-        <img src="assets/trends.png" alt="Bar charts of annual arXiv papers on visual generation and visual reasoning, and of visual reasoning papers as a percentage of visual generation papers.">
+<details class="figure-details"><summary>Research context <span>Publication trends / ????</span></summary>      <figure>
+        <img loading="lazy" decoding="async" src="assets/trends.png" alt="Bar charts of annual arXiv papers on visual generation and visual reasoning, and of visual reasoning papers as a percentage of visual generation papers.">
         <figcaption>Publication trends on arXiv place visual reasoning alongside the growth of visual generation. Counts for 2026 are partial and are marked as such in the figure.
           <span class="zh">arXiv 上的发表趋势说明，视觉推理与视觉生成一起增长。图中的 2026 年计数只覆盖已观察到的时间段。</span>
         </figcaption>
-      </figure>
+      </figure></details>
     </section>
 
     <section id="framework">
@@ -111,7 +111,7 @@
       </ul>
       <p class="zh">能力来源（capability source）说明信息从哪里来；能力载体（capability carrier）说明信息以什么形式保存或传递；能力桥接（capability bridge）说明信息如何影响生成器。来源包括训练数据、语言模型、多模态模型、仿真器或形式系统，以及预训练教师。载体包括自然语言、结构化状态、连续隐变量、视觉状态和评估信号。</p>
       <figure>
-        <img src="assets/framework.png" alt="Capability-flow framework. Sources and carriers feed a visual generator through one of five bridges. A physics example shows a simulator producing a trajectory that plan-then-render passes to a video generator.">
+        <img loading="lazy" decoding="async" src="assets/framework.png" alt="Capability-flow framework. Sources and carriers feed a visual generator through one of five bridges. A physics example shows a simulator producing a trajectory that plan-then-render passes to a video generator.">
         <figcaption>(a) A GVR system is described by its capability source, carrier, and bridge. In the physics example, a simulator supplies a trajectory, and plan-then-render passes that structured state to a video generator. (b) The five bridges, with the sources and carriers typically associated with each.
           <span class="zh">（a）用能力来源、载体和桥接描述一个 GVR 系统。物理例子中，仿真器给出轨迹，plan-then-render 把这个结构化状态交给视频生成器。（b）五种桥接及其常见来源和载体。</span>
         </figcaption>
@@ -125,12 +125,12 @@
       <p>Tasks are organized by the task-relevant state and by the temporal scope of correctness. The state may be discrete or relational, structured, or dense. Correctness may depend only on the final state, which the survey calls terminal-supported, or also on the intermediate states and transitions, which it calls trajectory-supported. These are correctness requirements, not model architectures or a ranking of difficulty.</p>
       <p class="zh">任务按所需状态和正确性的时间范围划分。状态可以是离散或关系型、结构化，或密集的视觉与物理状态。终态任务（terminal-supported）只要求最终状态正确；轨迹任务（trajectory-supported）还要求中间状态和转移有效。这里划分的是正确性要求，不是模型结构，也不是难度等级。</p>
       <figure>
-        <img src="assets/taxonomy.png" alt="A two-by-three taxonomy of generative visual reasoning tasks, with examples for discrete, structured, and dense states under terminal-supported and trajectory-supported correctness.">
+        <img loading="lazy" decoding="async" src="assets/taxonomy.png" alt="A two-by-three taxonomy of generative visual reasoning tasks, with examples for discrete, structured, and dense states under terminal-supported and trajectory-supported correctness.">
         <figcaption>Columns distinguish discrete or relational, structured, and dense states. Rows distinguish terminal-supported tasks from trajectory-supported tasks.
           <span class="zh">列区分离散或关系状态、结构化状态和密集状态。行区分终态任务和轨迹任务。</span>
         </figcaption>
       </figure>
-      <table>
+      <div class="table-scroll" role="region" aria-label="Task taxonomy" tabindex="0"><table>
         <thead>
           <tr>
             <th>Scope</th>
@@ -153,7 +153,7 @@
             <td>Pouring, knot tying<br>倾倒、打结</td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
       <p>The appropriate representation depends on what must be preserved to solve and evaluate the task. A final image can be enough for a solved puzzle. A sequence is needed when the path is part of the answer. Full video is useful when correctness depends on continuous motion, contact, or physical interaction that sparse states omit.</p>
       <p class="zh">表示方式取决于求解和评估时必须保留的信息。解出的谜题可以只看最终图像；路径本身是答案的一部分时，需要状态序列；正确性取决于连续运动、接触或物理交互、而稀疏状态表达不了这些信息时，完整视频才有必要。</p>
     </section>
@@ -163,31 +163,22 @@
       <p>A capability bridge specifies how task-relevant information affects visual generation. The five bridges can be combined. Planning can be followed by verification, and training-time feedback can become a capability the generator later uses directly.</p>
       <p class="zh">能力桥接描述任务相关信息如何影响视觉生成。五种机制可以组合：显式规划之后可以再验证，训练时的反馈也可以变成生成器后来直接使用的能力。</p>
       <figure>
-        <img src="assets/bridges.png" alt="Mechanisms and representative examples of internalisation, plan-then-render, latent transfer, interleaving, and verification.">
+        <img loading="lazy" decoding="async" src="assets/bridges.png" alt="Mechanisms and representative examples of internalisation, plan-then-render, latent transfer, interleaving, and verification.">
         <figcaption>Each bridge is shown with its information flow and representative implementations. Internalisation learns the capability. Plan-then-render supplies an explicit plan, such as a physical trajectory or keyframes. Latent transfer injects learned features. Interleaving reuses generated visual states. Verification uses correctness feedback for training, search, or revision. Example images are adapted from the cited works.
           <span class="zh">每种桥接都给出了信息流和代表性实现。Internalisation 把能力学进生成器；plan-then-render 先给出物理轨迹或关键帧等显式计划；latent transfer 注入学到的特征；interleaving 复用生成的视觉状态；verification 用正确性反馈进行训练、搜索或修改。示例图改编自相应论文。</span>
         </figcaption>
       </figure>
-      <h3>Internalisation</h3>
-      <p>The generator acquires the capability from data, annotations, teacher representations, or in-context examples. This is useful when the relevant dynamics are difficult to write down, but success alone does not show whether the model learned the required inference or only a visual pattern.</p>
-      <p class="zh">生成器从数据、标注、教师表示或上下文示例中获得能力。任务动态难以显式写出来时，这种方式有用；但成功本身不能区分模型学到的是所需推断，还是视觉模式。</p>
-      <h3>Plan-then-render</h3>
-      <p>A language model, multimodal model, or simulator first produces a plan. The plan may be a detailed prompt, a layout, a trajectory, or a visual state such as a keyframe, and the generator then renders it. The plan can be inspected, but the result depends on the plan’s quality.</p>
-      <p class="zh">语言模型、多模态模型或仿真器先产生计划，计划可以是细化后的提示、布局、轨迹或关键帧等视觉状态，再由生成器渲染。计划可以被检查，结果也受计划质量限制。</p>
-      <h3>Latent transfer</h3>
-      <p>An external model infers semantic, spatial, causal, or dynamic information, and a learned interface carries it into the generator as a latent. This can transfer information that is awkward to write explicitly, with less direct control over what is actually used.</p>
-      <p class="zh">外部模型先推断语义、空间、因果或动态信息，再通过学到的接口以隐变量送入生成器。它可以传递难以显式写清的信息，但对实际用了哪些信息的控制较弱。</p>
-      <h3>Interleaving</h3>
-      <p>Generation alternates textual reasoning with images, video, or latent visual states. The important test is whether a generated state changes the next decision, rather than only appearing as an illustration.</p>
-      <p class="zh">生成过程在文本推理和图像、视频或视觉隐状态之间交替。关键检验是：生成状态是否改变了下一步决策，而不是只作为插图出现。</p>
-      <h3>Verification</h3>
-      <p>A verifier scores or checks an intermediate or completed result. The signal can train the generator, choose among candidates, or request a revision. Verification can improve reliability without showing that the generator itself performed the reasoning.</p>
-      <p class="zh">验证器检查中间或最终结果。信号可以用于训练、候选选择或修改。验证可以提高可靠性，但本身不能证明推理是生成器完成的。</p>
+<div class="bridge-grid">      <article class="bridge-card"><h3>Internalisation</h3><p>The generator acquires the capability from data, annotations, teacher representations, or in-context examples. This is useful when the relevant dynamics are difficult to write down, but success alone does not show whether the model learned the required inference or only a visual pattern.</p><p class="zh">生成器从数据、标注、教师表示或上下文示例中获得能力。任务动态难以显式写出来时，这种方式有用；但成功本身不能区分模型学到的是所需推断，还是视觉模式。</p></article>
+      <article class="bridge-card"><h3>Plan-then-render</h3><p>A language model, multimodal model, or simulator first produces a plan. The plan may be a detailed prompt, a layout, a trajectory, or a visual state such as a keyframe, and the generator then renders it. The plan can be inspected, but the result depends on the plan’s quality.</p><p class="zh">语言模型、多模态模型或仿真器先产生计划，计划可以是细化后的提示、布局、轨迹或关键帧等视觉状态，再由生成器渲染。计划可以被检查，结果也受计划质量限制。</p></article>
+      <article class="bridge-card"><h3>Latent transfer</h3><p>An external model infers semantic, spatial, causal, or dynamic information, and a learned interface carries it into the generator as a latent. This can transfer information that is awkward to write explicitly, with less direct control over what is actually used.</p><p class="zh">外部模型先推断语义、空间、因果或动态信息，再通过学到的接口以隐变量送入生成器。它可以传递难以显式写清的信息，但对实际用了哪些信息的控制较弱。</p></article>
+      <article class="bridge-card"><h3>Interleaving</h3><p>Generation alternates textual reasoning with images, video, or latent visual states. The important test is whether a generated state changes the next decision, rather than only appearing as an illustration.</p><p class="zh">生成过程在文本推理和图像、视频或视觉隐状态之间交替。关键检验是：生成状态是否改变了下一步决策，而不是只作为插图出现。</p></article>
+      <article class="bridge-card"><h3>Verification</h3><p>A verifier scores or checks an intermediate or completed result. The signal can train the generator, choose among candidates, or request a revision. Verification can improve reliability without showing that the generator itself performed the reasoning.</p><p class="zh">验证器检查中间或最终结果。信号可以用于训练、候选选择或修改。验证可以提高可靠性，但本身不能证明推理是生成器完成的。</p></article>
+</div>
     </section>
 
     <section id="messages">
       <h2>Key messages<span class="zh">关键结论</span></h2>
-      <article class="message">
+<div class="message-grid">      <article class="message">
         <strong>Key message 1.</strong>
         <p>Match the output to what correctness requires: a final state for terminal-supported tasks, intermediate states for trajectory-supported tasks, and dense video when sparse states omit essential motion or interactions.</p>
         <p class="zh">输出要匹配正确性要求：终态任务保留最终状态，轨迹任务保留中间状态；稀疏状态漏掉关键运动或交互时，才需要密集视频。</p>
@@ -207,7 +198,8 @@
         <p>Generated visual states are useful reasoning intermediates when later decisions depend on information they preserve. Their benefit should be tested against explicit plans and compact representations under matched task conditions.</p>
         <p class="zh">只有后续决策依赖生成视觉状态所保留的信息时，这些状态才是有用的推理中间量。应当在相同任务条件下，与显式计划和紧凑表示比较。</p>
       </article>
-      <p>Native visual reasoning is especially relevant for continuous physical change, such as pouring or knot tying, where a sparse trajectory may omit shape, contact, and deformation. It is unnecessary when a symbolic plan or simulator already provides every variable the task requires.</p>
+</div>
+      <p>Native visual reasoning is especially relevant for continuous physical change, such as pouring or knot tying, where a sparse trajectory may omit shape, contact, and deformation. Its advantage should be tested against a symbolic plan or simulator that already provides the task-relevant information.</p>
       <p class="zh">倾倒、打结这类连续物理变化中，稀疏轨迹可能保留不了形状、接触和形变，原生视觉推理因此更有价值。如果符号计划或仿真器已经给出任务所需的全部变量，就不必再强行使用视觉推理。</p>
     </section>
 
@@ -225,12 +217,6 @@
       <p class="zh">不同桥接需要不同的干预。习得行为可以在未见任务上测试；预测计划可以与实际用于渲染的计划比较；传递的特征可以被移除或替换；中间视觉状态可以被编辑；验证可以比较有无反馈。性能变化说明的是某个组件的贡献，不是推理能力的普遍证明。</p>
     </section>
   </main>
-  <footer>
-    <div class="wrap">
-      <p>Dylan Yan · <a href="https://anzy200299-ui.github.io/">anzy200299-ui.github.io</a></p>
-      <p>Co-author names are withheld while the manuscript is under anonymous review. The full author list and citation record will be added when they can be released.</p>
-      <p class="zh">匿名审稿期间暂不列出合作者。完整作者名单和引用信息会在可以公开时补充。</p>
-    </div>
-  </footer>
+  <footer><div class="wrap footer-inner"><div><strong>A Survey of Generative Visual Reasoning</strong><p>Task requirements. Capability flow. Reasoning attribution.</p></div><a href="https://github.com/anzy200299-ui/generative-visual-reasoning-survey">Project repository ?</a><a href="#top">Back to top ?</a></div></footer>
 </body>
 </html>
