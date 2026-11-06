@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anzy200299-ui.github.io/generative-visual-reasoning-survey/sitemap.xml
